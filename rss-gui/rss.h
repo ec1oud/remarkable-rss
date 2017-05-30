@@ -5,6 +5,8 @@
 #include <QUrl>
 #include <QDateTime>
 
+#include <cstdint>
+
 class Rss
 {
 public:
@@ -16,7 +18,8 @@ public:
         const QUrl & link,
         const QUrl & image_link=QUrl(),
         const QDateTime & date=QDateTime(),
-        const QString & language = "en");
+        const QString & language = "en",
+        int32_t ttl=60);
 
     Rss & operator=(const Rss & rss);
     Rss & operator=(Rss && rss);
@@ -39,6 +42,9 @@ public:
     QString language() const;
     void setLanguage(const QString &language);
 
+    int32_t ttl() const;
+    void set_ttl(const int32_t &ttl);
+
 private:
     QString title_;
     QString description_;
@@ -46,6 +52,7 @@ private:
     QUrl image_link_;
     QDateTime date_;
     QString language_;
+    int32_t ttl_;
 };
 
 #endif // RSS_H

@@ -10,7 +10,8 @@ Rss::Rss(const Rss & rss)
           rss.link_,
           rss.image_link_,
           rss.date_,
-          rss.language_)
+          rss.language_,
+          rss.ttl_)
 {
 }
 
@@ -21,6 +22,7 @@ Rss::Rss(Rss && rss)
     , image_link_(std::move(rss.image_link_))
     , date_(std::move(rss.date_))
     , language_(std::move(rss.language_))
+    , ttl_(std::move(rss.ttl_))
 {
 }
 
@@ -29,13 +31,15 @@ Rss::Rss(const QString & title,
          const QUrl & link,
          const QUrl & image_link,
          const QDateTime & date,
-         const QString & language)
+         const QString & language,
+         int32_t ttl)
     : title_(title)
     , description_(description)
     , link_(link)
     , image_link_(image_link)
     , date_(date)
     , language_(language)
+    , ttl_(ttl)
 {
 }
 
@@ -51,6 +55,7 @@ Rss & Rss::operator=(Rss && rss) {
     image_link_ = std::move(rss.image_link_);
     date_ = std::move(rss.date_);
     language_ = std::move(rss.language_);
+    ttl_ = std::move(rss.ttl_);
     return *this;
 }
 
@@ -113,4 +118,14 @@ QString Rss::language() const
 void Rss::setLanguage(const QString &language)
 {
     language_ = language;
+}
+
+int32_t Rss::ttl() const
+{
+    return ttl_;
+}
+
+void Rss::set_ttl(const int32_t &ttl)
+{
+    ttl_ = ttl;
 }

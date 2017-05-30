@@ -20,6 +20,8 @@ public:
 
 public slots:
     void load_rss();
+    void rss_read();
+    void open_news(const QModelIndex& index);
 
 private:
     Ui::MainWindow *ui;

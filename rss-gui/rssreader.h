@@ -23,6 +23,11 @@ public:
     void set_model(DecoratedNewsModel * model);
     void load(const QUrl & url);
 
+    Rss rss() const;
+
+signals:
+    void finished();
+
 private slots:
     void reply_finished(QNetworkReply* reply);
     void ready_read();
@@ -31,7 +36,7 @@ private:
     QNetworkAccessManager manager_;
     QNetworkReply * reply_;
     QXmlStreamReader reader_;
-    RssHandler rss_hanler_;
+    RssHandler rss_handler_;
     DecoratedNewsModel * model_;
 
     void parse();

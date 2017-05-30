@@ -36,6 +36,10 @@ void DecoratedNewsModel::setSourceModel(QAbstractItemModel * source_model) {
     });
 }
 
+NewsModel * DecoratedNewsModel::news_model() {
+    return static_cast<NewsModel *>(sourceModel());
+}
+
 void DecoratedNewsModel::generate_thumbnails(const QModelIndex & start_index, int count) {
     if (!start_index.isValid()) return;
 

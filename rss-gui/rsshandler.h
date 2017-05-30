@@ -32,16 +32,14 @@ public:
     void clear();
 
     Rss rss() const;
-    void setRss(const Rss &rss);
+    void set_rss(const Rss &rss);
 
 private:
     QXmlStreamReader & reader_;
     QString err_string_;
     QString current_text_;
-    QString rss_build_date_;
     Rss rss_;
     News current_news_;
-    QString current_preview_;
     std::vector<std::string> stack_;
     DecoratedNewsModel * model_;
 };

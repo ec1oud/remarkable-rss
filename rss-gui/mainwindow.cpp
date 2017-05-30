@@ -3,6 +3,7 @@
 #include <QDialog>
 #include <QDebug>
 #include <QTimer>
+#include <QDesktopServices>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -27,11 +28,22 @@ MainWindow::MainWindow(QWidget *parent) :
     auto news_model = new NewsModel(this);
     auto decor_model = new DecoratedNewsModel(this);
     decor_model->setSourceModel(news_model);
-
-    rss_reader_.set_model(decor_model);
     decor_model->setSortRole(NewsModel::Roles::kDate);
 
+    QItemSelectionModel* news_selection_model = new QItemSelectionModel(decor_model, this);
+
+    rss_reader_.set_model(decor_model);
+    connect(&rss_reader_, &RssReader::finished, this, &MainWindow::rss_read);
+
     ui->newsListView->setModel(decor_model);
+    ui->newsListView->setSelectionModel(news_selection_model);
+
+    ui->newsListView->setSpacing(5);
+    ui->newsListView->setResizeMode(QListView::Adjust);
+    ui->newsListView->setFlow(QListView::TopToBottom);
+    //ui->newsListView->setWrapping(true);
+
+    connect(ui->newsListView, &QListView::doubleClicked, this, &MainWindow::open_news);
 }
 
 MainWindow::~MainWindow()
@@ -43,14 +55,30 @@ MainWindow::~MainWindow()
 void MainWindow::load_rss() {
     qDebug() << "loading RSS from '" << ui->urlEdit->text() << "'.";
 
-    //QUrl url = QUrl::fromUserInput(ui->urlEdit->text());
-    QUrl url("http://feeds.bbci.co.uk/news/rss.xml?edition=uk");
+    QUrl url = QUrl::fromUserInput(ui->urlEdit->text());
+    // QUrl url("http://feeds.bbci.co.uk/news/rss.xml?edition=uk");
+    //QUrl url("http://revistaepoca.globo.com/Revista/Epoca/Rss/0,,DMI0-15210,00.xml");
 
     if (!url.isValid()) {
         qWarning() << "Invalid URL '" << ui->urlEdit->text() << "'.";
         Util::show_errror("Error", "Invalid URL.");
+        // ui->urlEdit->undo();
         return;
     }
 
     rss_reader_.load(url);
+}
+
+void MainWindow::rss_read() {
+    auto rss = rss_reader_.rss();
+    ui->titleLabel->setText(rss.title());
+    ui->descriptionLabel->setText(rss.description());
+}
+
+void MainWindow::open_news(const QModelIndex& index) {
+    auto link = index.model()->data(index, NewsModel::Roles::kLink).toUrl();
+    bool ok = QDesktopServices::openUrl(link);
+    if (!ok) {
+        Util::show_errror("Error", "Failed to open external browser.");
+    }
 }
