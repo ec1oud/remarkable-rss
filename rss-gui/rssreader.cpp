@@ -8,6 +8,7 @@
 
 #include "rssreader.h"
 #include "decoratednewsmodel.h"
+#include "util.h"
 
 RssReader::RssReader()
     : reply_(nullptr)
@@ -25,22 +26,27 @@ void RssReader::set_model(DecoratedNewsModel * model) {
 void RssReader::load(const QUrl & url) {
     if (reply_) reply_->abort();
 
+    // todo (edgard.lima): use Etag and if-modified
+
+    rss_hanler_.clear();
+    reader_.clear();
     QNetworkRequest request(url);
     reply_ = manager_.get(QNetworkRequest(request));
     connect(reply_, &QIODevice::readyRead, this, &RssReader::ready_read);
 }
 
 void RssReader::reply_finished(QNetworkReply* reply) {
-    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug() << "Reponse network error" << reply->error();
-    qDebug() << "Reponse HTTP status code" << statusCode;
-    qDebug() << "Reply content:" << reply->readAll();
-
-    if (reply_ != reply) {
-        qWarning() << "reply differs";
+    //int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (reply->error() != QNetworkReply::NoError && reply->error() != QNetworkReply::OperationCanceledError) {
+        Util::show_errror("Http error", reply->errorString());
     }
+    qDebug() << "Read finished with error " << reply->errorString();
+
+
     reply->deleteLater();
     reply_ = nullptr;
+
+
 }
 
 void RssReader::ready_read() {
@@ -70,11 +76,15 @@ void RssReader::parse() {
 
     if (!parse_ok) {
         QXmlParseException ex(reader_.errorString(), reader_.columnNumber(), reader_.lineNumber());
-        rss_hanler_.fatalError(ex);
-        if (reply_) reply_->abort();
+        rss_hanler_.fatal_error(ex);
+        if (reply_) {
+            reply_->abort();
+        }
     } else if (reader_.error() && reader_.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
         QXmlParseException ex(reader_.errorString(), reader_.columnNumber(), reader_.lineNumber());
-        rss_hanler_.fatalError(ex);
-        if (reply_) reply_->abort();
+        rss_hanler_.fatal_error(ex);
+        if (reply_) {
+            reply_->abort();
+        }
     }
 }

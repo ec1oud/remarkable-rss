@@ -85,11 +85,11 @@
          </item>
         </layout>
        </item>
+       <item>
+        <widget class="QListView" name="newsListView"/>
+       </item>
       </layout>
      </widget>
-    </item>
-    <item>
-     <widget class="QListWidget" name="newsWidget"/>
     </item>
    </layout>
   </widget>

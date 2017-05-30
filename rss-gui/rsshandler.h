@@ -26,10 +26,10 @@ public:
     bool end_element(const QStringRef & ns_uri,
                     const QStringRef &local_name, const QStringRef & name);
     bool characters(const QStringRef &str);
-    bool fatalError(const QXmlParseException &exception);
+    bool fatal_error(const QXmlParseException &exception);
     QString errorString() const;
 
-    void reset();
+    void clear();
 
     Rss rss() const;
     void setRss(const Rss &rss);

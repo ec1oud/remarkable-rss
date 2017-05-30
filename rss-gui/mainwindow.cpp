@@ -8,6 +8,7 @@
 #include "ui_mainwindow.h"
 #include "decoratednewsmodel.h"
 #include "newsmodel.h"
+#include "util.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,11 +29,14 @@ MainWindow::MainWindow(QWidget *parent) :
     decor_model->setSourceModel(news_model);
 
     rss_reader_.set_model(decor_model);
-    //decor_model->setSortRole(NewsModel::Roles::kDate);
+    decor_model->setSortRole(NewsModel::Roles::kDate);
+
+    ui->newsListView->setModel(decor_model);
 }
 
 MainWindow::~MainWindow()
 {
+    timer_.stop();
     delete ui;
 }
 
@@ -44,20 +48,9 @@ void MainWindow::load_rss() {
 
     if (!url.isValid()) {
         qWarning() << "Invalid URL '" << ui->urlEdit->text() << "'.";
-        show_errror("Error", "Invalid URL.");
+        Util::show_errror("Error", "Invalid URL.");
         return;
     }
 
     rss_reader_.load(url);
-}
-
-void MainWindow::show_errror(const QString & title, const QString & message) {
-    auto msg_box = new QMessageBox( this );
-    msg_box->setIcon(QMessageBox::Critical);
-    msg_box->setAttribute( Qt::WA_DeleteOnClose );
-    msg_box->setStandardButtons( QMessageBox::Close );
-    msg_box->setWindowTitle(title);
-    msg_box->setText(message);
-    // msg_box->setModal(false);
-    msg_box->show();
 }

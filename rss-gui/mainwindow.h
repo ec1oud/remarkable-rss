@@ -25,8 +25,6 @@ private:
     Ui::MainWindow *ui;
     QTimer timer_;
     RssReader rss_reader_;
-
-    void show_errror(const QString & title, const QString & message);
 };
 
 #endif // MAINWINDOW_H

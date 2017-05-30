@@ -7,6 +7,7 @@
 
 #include "rsshandler.h"
 #include "decoratednewsmodel.h"
+#include "util.h"
 
 RssHandler::RssHandler(QXmlStreamReader & reader)
     : reader_(reader)
@@ -22,7 +23,7 @@ void RssHandler::set_model(DecoratedNewsModel * model) {
     }
 }
 
-void RssHandler::reset() {
+void RssHandler::clear() {
     model_->clear();
     rss_build_date_.clear();
     rss_ = Rss();
@@ -42,9 +43,9 @@ void RssHandler::setRss(const Rss &rss)
 }
 
 bool RssHandler::start_element(const QStringRef & ns_uri,
-                              const QStringRef & local_name,
-                              const QStringRef & name,
-                              const QXmlStreamAttributes &attributes )
+                               const QStringRef & local_name,
+                               const QStringRef & name,
+                               const QXmlStreamAttributes &attributes )
 {
     stack_.push_back(name.toString().toStdString());
 
@@ -95,8 +96,8 @@ bool RssHandler::characters( const QStringRef &str )
 
 // rssreader/rsshandler.cpp (continued)
 bool RssHandler::end_element( const QStringRef & /* ns_uri */,
-                             const QStringRef & /* local_name */,
-                             const QStringRef &name )
+                              const QStringRef & /* local_name */,
+                              const QStringRef &name )
 {
     const std::string & parent = stack_.size() <= 1 ? std::string("") : stack_[stack_.size()-2];
     const std::string & pparent = stack_.size() <= 2 ? std::string("") : stack_[stack_.size()-3];
@@ -176,12 +177,12 @@ QString RssHandler::errorString() const
     return err_string_;
 }
 
-bool RssHandler::fatalError( const QXmlParseException &exception )
+bool RssHandler::fatal_error( const QXmlParseException &exception )
 {
-    QMessageBox::information( 0, QObject::tr( "RSS-Reader" ),
-                              QObject::tr( "Parse error in line %1, columne %2: \n %3" )
-                              .arg( exception.lineNumber() )
-                              .arg( exception.columnNumber() )
-                              .arg( exception.message() ) );
+    Util::show_errror(QObject::tr( "RSS-Reader" ),
+                      QObject::tr( "Parse error in line %1, columne %2: \n %3" )
+                      .arg( exception.lineNumber() )
+                      .arg( exception.columnNumber() )
+                      .arg( exception.message() ) );
     return false;
 }

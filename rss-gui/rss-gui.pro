@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     rssreader.cpp \
     rsshandler.cpp \
     newsmodel.cpp \
-    decoratednewsmodel.cpp
+    decoratednewsmodel.cpp \
+    util.cpp
 
 HEADERS  += mainwindow.h \
     rss.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     rssreader.h \
     rsshandler.h \
     newsmodel.h \
-    decoratednewsmodel.h
+    decoratednewsmodel.h \
+    util.h
 
 FORMS    += mainwindow.ui
 
