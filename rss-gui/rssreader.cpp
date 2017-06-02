@@ -13,7 +13,6 @@
 
 RssReader::RssReader()
     : reply_(nullptr)
-    , rss_handler_(reader_)
     , model_(nullptr)
 {
     connect(&manager_, &QNetworkAccessManager::finished, this, &RssReader::reply_finished);

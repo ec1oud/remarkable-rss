@@ -10,9 +10,8 @@
 #include "util.h"
 #include "newsmodel.h"
 
-RssHandler::RssHandler(QXmlStreamReader & reader)
-    : reader_(reader)
-    , model_(nullptr)
+RssHandler::RssHandler()
+    : model_(nullptr)
 {
 }
 
@@ -37,8 +36,8 @@ void RssHandler::set_rss(const Rss &rss)
     rss_ = rss;
 }
 
-bool RssHandler::start_element(const QStringRef & ns_uri,
-                               const QStringRef & local_name,
+bool RssHandler::start_element(const QStringRef & /* ns_uri */,
+                               const QStringRef & /* local_name */,
                                const QStringRef & name,
                                const QXmlStreamAttributes &attributes )
 {

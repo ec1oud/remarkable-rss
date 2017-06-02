@@ -17,7 +17,7 @@ class DecoratedNewsModel;
 class RssHandler
 {
 public:
-    RssHandler(QXmlStreamReader & reader);
+    RssHandler();
     void set_model(DecoratedNewsModel * model);
 
     bool start_element(const QStringRef & ns_uri,
@@ -35,7 +35,6 @@ public:
     void set_rss(const Rss &rss);
 
 private:
-    QXmlStreamReader & reader_;
     QString err_string_;
     QString current_text_;
     Rss rss_;
