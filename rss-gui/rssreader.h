@@ -33,10 +33,10 @@ private slots:
     void ready_read();
 
 private:
-    QNetworkAccessManager manager_;
+    QNetworkAccessManager manager_;  // TODO (edgard.lima): pass as argument (dependecy injection) for unit test
     QNetworkReply * reply_;
     QXmlStreamReader reader_;
-    RssHandler rss_handler_;
+    RssHandler rss_handler_;  // TODO (edgard.lima): pass as argument (dependecy injection) for unit test
     DecoratedNewsModel * model_;
 
     void parse();
