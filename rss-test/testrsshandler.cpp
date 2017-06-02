@@ -8,6 +8,11 @@ TestRssHandler::TestRssHandler()
 
 }
 
+void TestRssHandler::init()
+{
+
+}
+
 void TestRssHandler::cleanup()
 {
     rss_handler_.clear();
@@ -21,13 +26,26 @@ void TestRssHandler::parse_ok()
     QStringRef a (&e);
     QStringRef b (&rss);
 
-    auto ret = rss_handler_.start_element(a, a, b, QXmlStreamAttributes());
+    QXmlStreamAttributes attr;
+    attr.append("version", "2.0");
 
-    QCOMPARE(ret, false);
-    QVERIFY(ret == false);
+    auto ret = rss_handler_.start_element(a, a, b, attr);
+
+    QCOMPARE(ret, true);
 }
 
 void TestRssHandler::parse_fail()
 {
+    QString e("");
+    QString rss("another");
 
+    QStringRef a (&e);
+    QStringRef b (&rss);
+
+    QXmlStreamAttributes attr;
+    attr.append("version", "2.0");
+
+    auto ret = rss_handler_.start_element(a, a, b, attr);
+
+    QCOMPARE(ret, false);
 }

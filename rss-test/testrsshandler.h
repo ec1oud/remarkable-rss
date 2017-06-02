@@ -7,6 +7,7 @@
 
 class TestRssHandler : public QObject
 {
+    Q_OBJECT
 public:
     TestRssHandler();
 

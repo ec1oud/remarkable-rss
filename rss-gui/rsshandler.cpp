@@ -20,7 +20,7 @@ void RssHandler::set_model(DecoratedNewsModel * model) {
 }
 
 void RssHandler::clear() {
-    model_->clear();
+    if (model_) model_->clear();
     rss_ = Rss();
     current_news_ = News();
     stack_.clear();
@@ -104,7 +104,7 @@ bool RssHandler::end_element( const QStringRef & /* ns_uri */,
 
     if ( name == "channel" ) {
     } else if ( name == "item" ) {
-        model_->news_model()->add_news(current_news_);
+        if (model_) model_->news_model()->add_news(current_news_);
         current_news_ = News();
     } else if ( name == "title" ) {
         if (is_item_elem) {
