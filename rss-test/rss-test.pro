@@ -15,27 +15,13 @@ DEPENDPATH += $$RSSGUI_PATH
 
 # TODO (edgard.lima): create a project include file
 
-SOURCES +=     ../rss-gui/rss.cpp \
-    ../rss-gui/news.cpp \
-    ../rss-gui/rssreader.cpp \
-    ../rss-gui/rsshandler.cpp \
-    ../rss-gui/newsmodel.cpp \
-    ../rss-gui/decoratednewsmodel.cpp \
-    ../rss-gui/util.cpp
-
-HEADERS  += \
-    ../rss-gui/rss.h \
-    ../rss-gui/news.h \
-    ../rss-gui/rssreader.h \
-    ../rss-gui/rsshandler.h \
-    ../rss-gui/newsmodel.h \
-    ../rss-gui/decoratednewsmodel.h \
-    ../rss-gui/util.h
+include(../rss-src.pri)
 
 SOURCES += main.cpp \
     testrsshandler.cpp
 
-
+HEADERS += \
+    testrsshandler.h
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -49,5 +35,3 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += mobility
-HEADERS += \
-    testrsshandler.h
