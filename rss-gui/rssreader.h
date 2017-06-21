@@ -13,14 +13,14 @@
 
 class QByteArray;
 class QNetworkReply;
-class DecoratedNewsModel;
+class NewsModel;
 
 class RssReader : public QObject
 {
     Q_OBJECT
 public:
     RssReader();
-    void set_model(DecoratedNewsModel * model);
+    void set_model(NewsModel * model);
     void load(const QUrl & url);
 
     Rss rss() const;
@@ -37,7 +37,7 @@ private:
     QNetworkReply * reply_;
     QXmlStreamReader reader_;
     RssHandler rss_handler_;  // TODO (edgard.lima): pass as argument (dependecy injection) for unit test
-    DecoratedNewsModel * model_;
+    NewsModel * model_;
 
     void parse();
 };

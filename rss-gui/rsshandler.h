@@ -12,13 +12,13 @@
 class QXmlStreamReader;
 class QXmlStreamAttributes;
 class QXmlParseException;
-class DecoratedNewsModel;
+class NewsModel;
 
 class RssHandler
 {
 public:
     RssHandler();
-    void set_model(DecoratedNewsModel * model);
+    void set_model(NewsModel * model);
 
     bool start_element(const QStringRef & ns_uri,
                       const QStringRef & local_name, const QStringRef & name,
@@ -40,7 +40,7 @@ private:
     Rss rss_;
     News current_news_;
     std::vector<std::string> stack_;
-    DecoratedNewsModel * model_;
+    NewsModel * model_;
 };
 
 #endif // RSSHANDLER_H

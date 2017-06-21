@@ -8,24 +8,27 @@
 
 class NewsModel;
 class QPixmap;
+class ImageCache;
 
 class DecoratedNewsModel : public QSortFilterProxyModel
 {
 public:
     DecoratedNewsModel(QObject * parent = NULL);
+    virtual ~DecoratedNewsModel();
 
     QVariant data(const QModelIndex & index, int role) const override;
     void setSourceModel(QAbstractItemModel * source_model) override;
 
     NewsModel * news_model();
 
-private:
-    void generate_thumbnails(const QModelIndex & start_index, int count);
+public slots:
+    void load_images();
 
-    void reload_thumnails();
+private slots:
+    void image_loaded(QList<int> rows);
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<QPixmap>> thumbnails_;
+    ImageCache * image_cache_;
 };
 
 #endif // DECORATEDNEWSMODEL_H

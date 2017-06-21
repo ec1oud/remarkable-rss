@@ -13,8 +13,6 @@ RSSGUI_PATH = ../rss-gui
 INCLUDEPATH += $$RSSGUI_PATH
 DEPENDPATH += $$RSSGUI_PATH
 
-# TODO (edgard.lima): create a project include file
-
 include(../rss-src.pri)
 
 SOURCES += main.cpp \

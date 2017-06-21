@@ -6,7 +6,6 @@
 #include <QXmlParseException>
 
 #include "rsshandler.h"
-#include "decoratednewsmodel.h"
 #include "util.h"
 #include "newsmodel.h"
 
@@ -15,12 +14,12 @@ RssHandler::RssHandler()
 {
 }
 
-void RssHandler::set_model(DecoratedNewsModel * model) {
+void RssHandler::set_model(NewsModel * model) {
     model_ = model;
 }
 
 void RssHandler::clear() {
-    if (model_) model_->clear();
+    if (model_) model_->removeRows(0, model_->rowCount(), QModelIndex());
     rss_ = Rss();
     current_news_ = News();
     stack_.clear();
@@ -46,7 +45,9 @@ bool RssHandler::start_element(const QStringRef & /* ns_uri */,
     const std::string & parent = stack_.size() <= 1 ? std::string("") : stack_[stack_.size()-2];
     const std::string & pparent = stack_.size() <= 2 ? std::string("") : stack_[stack_.size()-3];
 
-    bool is_img_thumnail_elem = pparent == "image" && parent == "thumbnail";
+    qDebug() << name;
+
+    bool is_img_thumnail_elem = pparent == "channel" && parent == "item";
 
     if (stack_.front() != "rss") {
         err_string_ = QObject::tr("This file is not an RSS source.");
@@ -77,6 +78,8 @@ bool RssHandler::start_element(const QStringRef & /* ns_uri */,
             auto url = attributes.value("url").toString();
             current_news_.set_image_link(url);
         }
+    } else {
+
     }
     current_text_ = "";
     return true;
@@ -104,7 +107,7 @@ bool RssHandler::end_element( const QStringRef & /* ns_uri */,
 
     if ( name == "channel" ) {
     } else if ( name == "item" ) {
-        if (model_) model_->news_model()->add_news(current_news_);
+        if (model_) model_->add_news(current_news_);
         current_news_ = News();
     } else if ( name == "title" ) {
         if (is_item_elem) {

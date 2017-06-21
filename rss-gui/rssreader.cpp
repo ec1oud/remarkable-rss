@@ -7,7 +7,6 @@
 #include <QXmlParseException>
 
 #include "rssreader.h"
-#include "decoratednewsmodel.h"
 #include "util.h"
 #include "newsmodel.h"
 
@@ -18,7 +17,7 @@ RssReader::RssReader()
     connect(&manager_, &QNetworkAccessManager::finished, this, &RssReader::reply_finished);
 }
 
-void RssReader::set_model(DecoratedNewsModel * model) {
+void RssReader::set_model(NewsModel * model) {
     model_ = model;
     rss_handler_.set_model(model);
 }
@@ -30,7 +29,7 @@ void RssReader::load(const QUrl & url) {
 
     rss_handler_.clear();
     reader_.clear();
-    model_->news_model()->removeRows(0, model_->news_model()->rowCount(), QModelIndex());
+    model_->removeRows(0, model_->rowCount(), QModelIndex());
     QNetworkRequest request(url);
     reply_ = manager_.get(QNetworkRequest(request));
     connect(reply_, &QIODevice::readyRead, this, &RssReader::ready_read);
@@ -45,8 +44,9 @@ void RssReader::reply_finished(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError && reply->error() != QNetworkReply::OperationCanceledError) {
         Util::show_errror("Http error", reply->errorString());
     }
-    qDebug() << "Read finished with error " << reply->errorString();
+    qDebug() << "Read finished. Error code:" << reply->errorString();
 
+    // qDebug() << "original request" << reply_->request().url();
 
     reply->deleteLater();
     reply_ = nullptr;

@@ -26,14 +26,17 @@ MainWindow::MainWindow(QWidget *parent) :
     timer_.start();
 
     auto news_model = new NewsModel(this);
+
     auto decor_model = new DecoratedNewsModel(this);
     decor_model->setSourceModel(news_model);
     decor_model->setSortRole(NewsModel::Roles::kDate);
+    // decor_model->setDynamicSortFilter(true);
 
     QItemSelectionModel* news_selection_model = new QItemSelectionModel(decor_model, this);
 
-    rss_reader_.set_model(decor_model);
+    rss_reader_.set_model(news_model);
     connect(&rss_reader_, &RssReader::finished, this, &MainWindow::rss_read);
+    connect(&rss_reader_, &RssReader::finished, decor_model, &DecoratedNewsModel::load_images);
 
     ui->newsListView->setModel(decor_model);
     ui->newsListView->setSelectionModel(news_selection_model);
@@ -41,9 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->newsListView->setSpacing(5);
     ui->newsListView->setResizeMode(QListView::Adjust);
     ui->newsListView->setFlow(QListView::TopToBottom);
+
     //ui->newsListView->setWrapping(true);
 
     connect(ui->newsListView, &QListView::doubleClicked, this, &MainWindow::open_news);
+
+    ui->urlEdit->setText("http://feeds.bbci.co.uk/news/rss.xml?edition=uk");
 }
 
 MainWindow::~MainWindow()
@@ -73,6 +79,7 @@ void MainWindow::rss_read() {
     auto rss = rss_reader_.rss();
     ui->titleLabel->setText(rss.title());
     ui->descriptionLabel->setText(rss.description());
+    // ui->newsListView->model()->sort(-1, Qt::DescendingOrder);
 }
 
 void MainWindow::open_news(const QModelIndex& index) {

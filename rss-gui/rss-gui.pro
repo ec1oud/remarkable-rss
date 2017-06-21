@@ -30,4 +30,3 @@ SOURCES += main.cpp
 
 CONFIG += mobility
 MOBILITY = 
-
