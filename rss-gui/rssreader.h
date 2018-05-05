@@ -1,8 +1,6 @@
 #ifndef RSSPARSER_H
 #define RSSPARSER_H
 
-#include <unordered_map>
-
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QXmlStreamReader>

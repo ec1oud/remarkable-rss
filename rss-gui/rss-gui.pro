@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network xml
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui network xml quick
 
 CONFIG += c++14
 
@@ -28,5 +26,9 @@ include(../rss-src.pri)
 
 SOURCES += main.cpp
 
-CONFIG += mobility
-MOBILITY = 
+RESOURCES += rss.qrc
+
+linux-oe-g++ {
+    LIBS += -lqsgepaper
+}
+

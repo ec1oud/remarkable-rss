@@ -1,6 +1,6 @@
 RSSGUI_DIR = ../rss-gui
 
-SOURCES += $$RSSGUI_DIR/mainwindow.cpp \
+SOURCES += \
     $$RSSGUI_DIR/rss.cpp \
     $$RSSGUI_DIR/news.cpp \
     $$RSSGUI_DIR/rssreader.cpp \
@@ -10,7 +10,7 @@ SOURCES += $$RSSGUI_DIR/mainwindow.cpp \
     $$RSSGUI_DIR/util.cpp \
     $$RSSGUI_DIR/imagecache.cpp
 
-HEADERS  += $$RSSGUI_DIR/mainwindow.h \
+HEADERS  += \
     $$RSSGUI_DIR/rss.h \
     $$RSSGUI_DIR/news.h \
     $$RSSGUI_DIR/rssreader.h \
@@ -20,4 +20,3 @@ HEADERS  += $$RSSGUI_DIR/mainwindow.h \
     $$RSSGUI_DIR/util.h \
     $$RSSGUI_DIR/imagecache.h
 
-FORMS    += $$RSSGUI_DIR/mainwindow.ui

@@ -42,7 +42,7 @@ Rss RssReader::rss() const {
 void RssReader::reply_finished(QNetworkReply* reply) {
     //int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply->error() != QNetworkReply::NoError && reply->error() != QNetworkReply::OperationCanceledError) {
-        Util::show_errror("Http error", reply->errorString());
+        Util::show_error("Http error", reply->errorString());
     }
     qDebug() << "Read finished. Error code:" << reply->errorString();
 

@@ -1,7 +1,6 @@
 #include <QtXml>
 #include <QtGui>
 #include <QDebug>
-#include <QMessageBox>
 #include <QXmlStreamReader>
 #include <QXmlParseException>
 
@@ -166,7 +165,7 @@ QString RssHandler::errorString() const
 
 bool RssHandler::fatal_error( const QXmlParseException &exception )
 {
-    Util::show_errror(QObject::tr( "RSS-Reader" ),
+    Util::show_error(QObject::tr( "RSS-Reader" ),
                       QObject::tr( "Parse error in line %1, columne %2: \n %3" )
                       .arg( exception.lineNumber() )
                       .arg( exception.columnNumber() )

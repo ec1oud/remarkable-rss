@@ -8,7 +8,7 @@ class Util
 public:
     Util();
 
-    static void show_errror(const QString & title, const QString & message);
+    static void show_error(const QString & title, const QString & message);
 };
 
 #endif // UTIL_H
