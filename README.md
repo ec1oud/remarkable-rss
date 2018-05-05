@@ -1,2 +1,2 @@
-# rss-news
-RSS News develped in Qt 5
+# reMarkable RSS
+RSS News app for the [reMarkable](https://remarkable.com/) tablet.
