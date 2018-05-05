@@ -9,13 +9,12 @@
 
 #include "news.h"
 
-class Album;
-class DatabaseManager;
-class AlbumModel;
+class RssReader;
 
 class NewsModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
 public:
 
     enum Roles {
@@ -35,12 +34,23 @@ public:
     bool removeRows(int row, int count, const QModelIndex& parent) override;
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    QUrl url() const { return m_url; }
+    void setUrl(QUrl url);
+
+protected slots:
+    void readingFinished();
+
+signals:
+    void urlChanged();
+
 private:
     void loadNewss(int albumId);
     bool isIndexValid(const QModelIndex& index) const;
 
 private:
     std::vector<News> news_;
+    QUrl m_url;
+    RssReader *m_reader = nullptr;
 };
 
 #endif // NEWSMODEL_H

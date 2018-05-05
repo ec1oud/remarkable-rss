@@ -1,4 +1,5 @@
 #include "newsmodel.h"
+#include "rssreader.h"
 
 NewsModel::NewsModel(QObject* parent)
     : QAbstractListModel(parent)
@@ -71,6 +72,29 @@ QHash<int, QByteArray> NewsModel::roleNames() const {
     roles[Roles::kDate] = "date";
 
     return roles;
+}
+
+void NewsModel::setUrl(QUrl url)
+{
+    if (m_url == url)
+        return;
+
+    m_url = url;
+//    if (m_reader)
+//        readingFinished();
+    m_reader = new RssReader();
+    m_reader->set_model(this);
+    connect(m_reader, &RssReader::finished, this, &NewsModel::readingFinished);
+    m_reader->load(url);
+    emit urlChanged();
+}
+
+void NewsModel::readingFinished()
+{
+    Rss rss = m_reader->rss();
+    qDebug() << "finished" << rss.description();
+    delete m_reader;
+    m_reader = nullptr;
 }
 
 bool NewsModel::isIndexValid(const QModelIndex& index) const {

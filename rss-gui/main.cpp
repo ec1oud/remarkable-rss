@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
+#include <qqml.h>
 
 // Added for reMarkable support
 #include <QtPlugin>
@@ -8,6 +9,8 @@
 Q_IMPORT_PLUGIN(QsgEpaperPlugin)
 #endif
 // end reMarkable additions
+
+#include "newsmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +24,7 @@ int main(int argc, char *argv[])
     // end reMarkable additions
 
     QGuiApplication app(argc, argv);
+    qmlRegisterType<NewsModel>("Rss", 1,0, "NewsModel");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

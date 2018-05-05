@@ -1,19 +1,50 @@
-import QtQuick 2.0
-import QtQuick.Window 2.0
+import QtQuick 2.6
+import QtQuick.Window 2.1
+import Rss 1.0
 
 Window {
-	width: 320
-	height: 240
-	visible: true
-	color: "black"
+    width: 1404
+    height: 1872
+    visible: true
 
-  Text {
-	anchors.fill: parent
-	anchors.margins: 10
-      text: "<b>Hello</b> <i>World!</i>"
-//      font.family: "Helvetica"
-      font.pointSize: 20
-	color: "white"
-  }
-
+    Rectangle {
+        anchors.fill: parent
+        ListView {
+            anchors.fill: parent
+            model: NewsModel {
+                url: "http://feeds.bbci.co.uk/news/rss.xml?edition=uk"
+            }
+            delegate: Item {
+                width: parent.width
+                height: Math.max(132, titleText.height + storyText.height + 4)
+                Image {
+                    id: storyImage
+                    y: 2
+                    height: 128
+                    source: image
+                    fillMode: Image.PreserveAspectFit
+                }
+                Text {
+                    id: titleText
+                    text: title
+                    x: storyImage.width + 2
+                    width: parent.width - x - 2
+                    elide: Text.ElideRight
+                    font.weight: Font.DemiBold
+                }
+                Text {
+                    id: storyText
+                    x: storyImage.width + 2
+                    width: parent.width - x - 2
+                    y: titleText.height
+                    wrapMode: Text.WordWrap
+                    text: description
+                }
+                Rectangle {
+                    width: parent.width; height: 1
+                    color: "#888"
+                }
+            }
+        }
+    }
 }
